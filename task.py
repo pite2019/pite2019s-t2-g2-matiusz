@@ -38,7 +38,7 @@ class Client:
             self.Money = self.Money - Amount
             Client.Money = Client.Money + Amount
             self.Log.append({"transaction from " + self.Name + " to " + Client.Name, Amount})
-            self.Log.append({"transaction from " + self.Name + " to " + Client.Name, Amount})
+            Client.Log.append({"transaction from " + self.Name + " to " + Client.Name, Amount})
             return Amount
 
 def Main():
