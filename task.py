@@ -1,26 +1,57 @@
-#
-#Banking simulator. Write a code in python that simulates the banking system. 
-#The program should:
-# - be able to create new banks
-# - store client information in banks
-# - allow for cash input and withdrawal
-# - allow for money transfer from client to client
-#If you can think of any other features, you can add them.
-#This code shoud be runnable with 'python kol1.py'.
-#You don't need to use user input, just show me in the script that the structure of your code works.
-#If you have spare time you can implement: Command Line Interface, some kind of data storage, or even multiprocessing.
-#
-#Try to expand your implementation as best as you can. 
-#Think of as many features as you can, and try implementing them.
-#Make intelligent use of pythons syntactic sugar (overloading, iterators, generators, etc)
-#Most of all: CREATE GOOD, RELIABLE, READABLE CODE.
-#The goal of this task is for you to SHOW YOUR BEST python programming skills.
-#Impress everyone with your skills, show off with your code.
-#
-#Your program must be runnable with command "python task.py".
-#Show some usecases of your library in the code (print some things)
-#
-#When you are done upload this code to your github repository. 
-#
-#Delete these comments before commit!
-#Good luck.
+
+
+class Bank:
+    def __init__(self, name):
+        self.BankName = name
+        self.ClientList = []
+    def add_client(self, Name):
+        client = Client(Name)
+        self.ClientList.append(client)
+        return client
+    def remove_client(self, Client):
+        self.ClientList.remove(Client)
+
+
+
+
+class Client:
+    def __init__(self, Name):
+        self.Name = Name
+        self.Money = 0
+        self.Log = []
+    def money_input(self, Amount):
+        self.Money = self.Money + Amount
+        self.Log.append({"input", Amount})
+    def money_withdrawal(self, Amount):
+        if self.Money<Amount:
+            self.Log.append({"withdrawal attempt, not enough money", Amount})
+            return 0
+        else:
+            self.Log.append({"withdrawal", Amount})
+            self.Money =  self.Money-Amount
+            return Amount
+    def transaction(self, Client, Amount):
+        if self.Money<Amount:
+            self.Log.append({"transaction failed, not enough money", Amount})
+            return 0
+        else:
+            self.Money = self.Money - Amount
+            Client.Money = Client.Money + Amount
+            self.Log.append({"transaction from " + self.Name + " to " + Client.Name, Amount})
+            self.Log.append({"transaction from " + self.Name + " to " + Client.Name, Amount})
+            return Amount
+
+def Main():
+    bank1 = Bank("Polski")
+    client1 = bank1.add_client("kowalski")
+    client2 = bank1.add_client("nowak")
+    client1.money_input(100)
+    client1.money_withdrawal(50)
+    client1.money_withdrawal(100)
+    client2.money_input(200)
+    client2.transaction(client1, 150)
+    print(client1.Log)
+    print(client2.Log)
+
+Main()
+
