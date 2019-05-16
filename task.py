@@ -1,5 +1,7 @@
 
 
+
+
 class Bank:
     def __init__(self, name):
         self.BankName = name
@@ -12,18 +14,17 @@ class Bank:
         self.ClientList.remove(Client)
 
 
-
-
 class Client:
     def __init__(self, Name):
         self.Name = Name
         self.Money = 0
         self.Log = []
+        self.MaxCredit = 0
     def money_input(self, Amount):
         self.Money = self.Money + Amount
         self.Log.append({"input", Amount})
     def money_withdrawal(self, Amount):
-        if self.Money<Amount:
+        if self.Money+self.MaxCredit<Amount:
             self.Log.append({"withdrawal attempt, not enough money", Amount})
             return 0
         else:
@@ -31,7 +32,7 @@ class Client:
             self.Money =  self.Money-Amount
             return Amount
     def transaction(self, Client, Amount):
-        if self.Money<Amount:
+        if self.Money+self.MaxCredit<Amount:
             self.Log.append({"transaction failed, not enough money", Amount})
             return 0
         else:
@@ -40,18 +41,11 @@ class Client:
             self.Log.append({"transaction from " + self.Name + " to " + Client.Name, Amount})
             Client.Log.append({"transaction from " + self.Name + " to " + Client.Name, Amount})
             return Amount
+    def __str__(self):
+        return self.Name +" " + str(self.Money) + " " + str(self.Log)
 
 def Main():
-    bank1 = Bank("Polski")
-    client1 = bank1.add_client("kowalski")
-    client2 = bank1.add_client("nowak")
-    client1.money_input(100)
-    client1.money_withdrawal(50)
-    client1.money_withdrawal(100)
-    client2.money_input(200)
-    client2.transaction(client1, 150)
-    print(client1.Log)
-    print(client2.Log)
+    return 0
 
-Main()
-
+if __name__ == "__main__" :
+    Main()
